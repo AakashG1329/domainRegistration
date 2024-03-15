@@ -8,3 +8,4 @@ bcrypt
 jose
 python-jose[cryptography]
 mysql-connector-python
+# pyodbc
