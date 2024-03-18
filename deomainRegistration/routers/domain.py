@@ -34,7 +34,7 @@ def get_Domain(id:int,db: Session = Depends(get_db),current_user:schemas.Users=D
     return item
 @router.post("/create",status_code=201)
 def create_domain(request:schemas.Domain,db:Session=Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
-    create=models.Domain(domain_name=request.domain_name,registered_date=request.registered_date,expired_date=request.expired_date,created_date=datetime.now(),update_date="")
+    create=models.Domain(domain_name=request.domain_name,registered_date=request.registered_date,expired_date=request.expired_date,created_date=datetime.now(),updated_date="")
     db.add(create)
     db.commit()
     db.refresh(create)
@@ -50,7 +50,7 @@ async def update_Domain(id:int,request:schemas.DomainUpdateModel,db: Session = D
     domain.domain_name=request.domain_name
     domain.registered_date=request.registered_date 
     domain.registered_date=request.registered_date 
-    domain.update_date=datetime.now()
+    domain.updated_date=datetime.now()
     
     db.commit()
     return "Updated successfully."

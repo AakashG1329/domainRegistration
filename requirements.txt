@@ -1,5 +1,6 @@
 fastapi
 uvicorn
+pyodbc
 sqlalchemy
 pyjwt
 python-multipart
@@ -8,4 +9,3 @@ bcrypt
 jose
 python-jose[cryptography]
 mysql-connector-python
-pyodbc

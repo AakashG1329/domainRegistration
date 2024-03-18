@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from deomainRegistration.routers import domain,user
+from deomainRegistration.routers import domain,user,hosting
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -20,3 +20,4 @@ app.add_middleware(
 )
 app.include_router(user.router)
 app.include_router(domain.router)
+app.include_router(hosting.router)

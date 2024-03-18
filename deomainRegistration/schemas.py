@@ -7,7 +7,7 @@ class Domain(BaseModel):
     registered_date:Optional[datetime] =None 
     expired_date:Optional[datetime] =None 
     # created_date:Optional[datetime] =None 
-    # update_date:Optional[datetime] =None 
+    # updated_date:Optional[datetime] =None 
 
 class DomainResponceModel(BaseModel):
     id:int
@@ -15,7 +15,7 @@ class DomainResponceModel(BaseModel):
     registered_date:Optional[datetime] =None 
     expired_date:Optional[datetime] =None 
     created_date:Optional[datetime] =None 
-    update_date:Optional[datetime] =None 
+    updated_date:Optional[datetime] =None 
 class DomainUpdateModel(BaseModel):
     domain_name:str
     registered_date:Optional[datetime] =None 
@@ -25,7 +25,7 @@ class Users(BaseModel):
     password:str
     email_id:str
     # created_date:datetime
-    # update_date:datetime
+    # updated_date:datetime
 class UsersUpdateRequestModel(BaseModel):
     username:str
     email_id:str
@@ -34,7 +34,7 @@ class UserResponceModel(BaseModel):
     username:str
     email_id:str
     created_date:Optional[datetime] =None 
-    update_date:Optional[datetime] =None 
+    updated_date:Optional[datetime] =None 
 
 class Login(BaseModel):
     username:str
@@ -46,3 +46,21 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     email_id: Optional[str]=None
+
+class HostingResponceModel(BaseModel):
+    id:int
+    hosting_server_type:str
+    registered_date:Optional[datetime] =None 
+    expired_date:Optional[datetime] =None 
+    email_id:str 
+    mobile_no:int
+    created_date:Optional[datetime] =None 
+    updated_date:Optional[datetime] =None 
+
+class Hosting(BaseModel):
+    hosting_server_type:str
+    registered_date:Optional[datetime] =None 
+    expired_date:Optional[datetime] =None 
+    email_id:str 
+    mobile_no:int
+
