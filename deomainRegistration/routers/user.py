@@ -51,7 +51,7 @@ def create_users(request:schemas.Users,db:Session=Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"{request.username} Username already Found")
     
     hashedPassword=passwordHashing.get_password_hash(request.password)
-    create=models.Users( username=request.username,password=hashedPassword,email_id=request.email_id,created_date=datetime.now(),update_date="")
+    create=models.Users( username=request.username,password=hashedPassword,email_id=request.email_id,created_date=datetime.now(),updated_date="")
     db.add(create)
     db.commit()
     db.refresh(create)
@@ -66,7 +66,7 @@ async def update_Users(id:int,request:schemas.UsersUpdateRequestModel,db: Sessio
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"{id} Data Not Found")
     users.username=request.username
     users.email_id=request.email_id 
-    users.update_date=datetime.now() 
+    users.updated_date=datetime.now() 
     db.commit()
     return "Updated successfully."
 @router.delete("/delete/{id}",status_code=202)
