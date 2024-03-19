@@ -10,8 +10,8 @@ db_name = "gsmtechinfo"
 
 # Update the MySQL database URL
 # SQLALCHEMY_DATABASE_URL = "workstation id=gsmtechinfo.mssql.somee.com;packet size=4096;user id=aakashg132906_SQLLogin_1;pwd=8nxdn44l2q;data source=gsmtechinfo.mssql.somee.com;persist security info=False;initial catalog=gsmtechinfo;TrustServerCertificate=True"
-# SQLALCHEMY_DATABASE_URL = "mysql+mysqlconnector://root:@localhost/domain_registration"
-SQLALCHEMY_DATABASE_URL =f'mssql+pyodbc://{user}:{password}@{server}/{db_name}?driver=ODBC Driver 17 for SQL Server'
+SQLALCHEMY_DATABASE_URL = "mysql+mysqlconnector://root:@localhost/domain_registration"
+# SQLALCHEMY_DATABASE_URL =f'mssql+pyodbc://{user}:{password}@{server}/{db_name}?driver=ODBC Driver 17 for SQL Server'
 
 
 engine = create_engine(
