@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 fastapi
 uvicorn
 pyodbc
@@ -10,16 +9,4 @@ bcrypt
 jose
 python-jose[cryptography]
 mysql-connector-python
-=======
-fastapi
-uvicorn
-pyodbc
-sqlalchemy
-pyjwt
-python-multipart
-passlib
-bcrypt
-jose
-python-jose[cryptography]
-mysql-connector-python
->>>>>>> 02733a64f44d554f03dcf2da67bf91643dafecb8
+
