@@ -19,26 +19,29 @@ models.Base.metadata.create_all(engine)
 #     finally:
 #         db.close()
 
-@router.get("/all",status_code=200,response_model=List[schemas.HostingResponceModel])
+@router.get("/all",status_code=200)
 def get_all_hosting(db: Session = Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
     item =db.query(models.Hosting).all()
     if not item:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="No Data Found")
-    return item
+    responce={"status_code":200,"detail":"Hosting Data Fatched Successfully.","responseData":item}
+    return responce
 
-@router.get("/{id}",status_code=200,response_model=schemas.HostingResponceModel)
+@router.get("/{id}",status_code=200)
 def get_hosting(id:int,db: Session = Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
     item =db.query(models.Hosting).filter(models.Hosting.id == id).first()
     if not item:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"{id} Data Not Found")
-    return item
+    responce={"status_code":200,"detail":"Hosting Data Fatched Successfully.","responseData":item}
+    return responce
 @router.post("/create",status_code=201)
 def create_hosting(request:schemas.Hosting,db:Session=Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
     create=models.Hosting(hosting_server_type=request.hosting_server_type,registered_date=request.registered_date,expired_date=request.expired_date,email_id=request.email_id,mobile_no=request.mobile_no,created_date=datetime.now(),updated_date="")
     db.add(create)
     db.commit()
     db.refresh(create)
-    return create
+    reponce={"status_code":201,"detail":f"Hosting {create.id}-id Created Successfully."}
+    return reponce
 
 @router.put("/update/{id}",status_code=200)
 async def update_hosting(id:int,request:schemas.Hosting,db: Session = Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
@@ -51,11 +54,11 @@ async def update_hosting(id:int,request:schemas.Hosting,db: Session = Depends(ge
     hosting.registered_date=request.registered_date 
     hosting.email_id=request.email_id 
     hosting.mobile_no=request.mobile_no 
-    hosting.expried_date=request.expired_date 
+    hosting.expired_date=request.expired_date 
     hosting.updated_date=datetime.now()
-    
     db.commit()
-    return "Updated successfully."
+    reponce={"status_code":200,"detail":f"Hosting id-{hosting.id} Updated Successfully."}
+    return reponce
 @router.delete("/delete/{id}",status_code=202)
 def delete_hosting(id:int,db: Session = Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
     
@@ -66,4 +69,5 @@ def delete_hosting(id:int,db: Session = Depends(get_db),current_user:schemas.Use
     # hosting.update(request)
     hosting.delete(synchronize_session=False)
     db.commit()
-    return "Deleted successfully."
+    reponce={"status_code":202,"detail":f"Hosting id-{hosting.first().id} Deleted Successfully."}
+    return reponce

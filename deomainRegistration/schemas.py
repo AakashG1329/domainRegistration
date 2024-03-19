@@ -10,7 +10,7 @@ class Domain(BaseModel):
     # updated_date:Optional[datetime] =None 
 
 class DomainResponceModel(BaseModel):
-    id:int
+    DomainResponceModel:int
     domain_name:str
     registered_date:Optional[datetime] =None 
     expired_date:Optional[datetime] =None 
@@ -64,3 +64,7 @@ class Hosting(BaseModel):
     email_id:str 
     mobile_no:int
 
+# class Responce():
+#     status_code:str
+#     message:str
+#     responceData:List[]

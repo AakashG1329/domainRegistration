@@ -19,26 +19,29 @@ models.Base.metadata.create_all(engine)
 #     finally:
 #         db.close()
 
-@router.get("/all",status_code=200,response_model=List[schemas.DomainResponceModel])
+@router.get("/all",status_code=200)
 def get_all_domain(db: Session = Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
     item =db.query(models.Domain).all()
     if not item:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="No Data Found")
-    return item
+    responce={"status_code":200,"message":"Domain Data Fatched Successfully.","responseData":item}
+    return responce
 
-@router.get("/{id}",status_code=200,response_model=schemas.DomainResponceModel)
+@router.get("/{id}",status_code=200)
 def get_Domain(id:int,db: Session = Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
     item =db.query(models.Domain).filter(models.Domain.id == id).first()
     if not item:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"{id} Data Not Found")
-    return item
+    responce={"status_code":200,"message":"Domain Data Fatched Successfully.","responseData":item}
+    return responce
 @router.post("/create",status_code=201)
 def create_domain(request:schemas.Domain,db:Session=Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
     create=models.Domain(domain_name=request.domain_name,registered_date=request.registered_date,expired_date=request.expired_date,created_date=datetime.now(),updated_date="")
     db.add(create)
     db.commit()
     db.refresh(create)
-    return create
+    reponce={"status_code":200,"detail":f"Domain id-{create.id} Created Successfully."}
+    return reponce
 
 @router.put("/update/{id}",status_code=200)
 async def update_Domain(id:int,request:schemas.DomainUpdateModel,db: Session = Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
@@ -53,7 +56,8 @@ async def update_Domain(id:int,request:schemas.DomainUpdateModel,db: Session = D
     domain.updated_date=datetime.now()
     
     db.commit()
-    return "Updated successfully."
+    reponce={"status_code":200,"detail":f"Domain id-{domain.id} Updated Successfully."}
+    return reponce
 @router.delete("/delete/{id}",status_code=202)
 def delete_domain(id:int,db: Session = Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
     
@@ -64,4 +68,5 @@ def delete_domain(id:int,db: Session = Depends(get_db),current_user:schemas.User
     # Domain.update(request)
     domain.delete(synchronize_session=False)
     db.commit()
-    return "Deleted successfully."
+    reponce={"status_code":202,"detail":f"Domain id-{domain.first().id} Deleted Successfully."}
+    return reponce

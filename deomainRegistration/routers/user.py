@@ -31,19 +31,26 @@ def user_login(request:OAuth2PasswordRequestForm=Depends(),db:Session=Depends(ge
     return {"email_id":user.email_id,"access_token":access_token, "token_type":"bearer"}
 
 
-@router.get("/all",status_code=200,response_model=List[schemas.UserResponceModel])
+@router.get("/all",status_code=200)
 def get_all_users(db: Session = Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
-    item =db.query(models.Users).all()
-    if not item:
+    items =db.query(models.Users).all()
+    if not items:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="No Data Found")
-    return item
+    res_data=[]
+    for data in items:
+         res_data.append({"id":data.id,"username":data.username, 'email_id':data.email_id,'created_date':data.created_date,'updated_date':data.updated_date})
+    response={"status_code":200,"detail":"Users Data Fatched Successfully",'response_data':res_data}
+    return response
 
-@router.get("/{id}",status_code=200,response_model=schemas.UserResponceModel)
+@router.get("/{id}",status_code=200)
 def get_User(id:int,db: Session = Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
     item =db.query(models.Users).filter(models.Users.id == id).first()
     if not item:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"{id} Data Not Found")
-    return item
+    res_data=[]
+    res_data.append({"id":item.id,"username":item.username, 'email_id':item.email_id,'created_date':item.created_date,'updated_date':item.updated_date})
+    response={"status_code":200,"detail":"User Data Fatched Successfully",'response_data':res_data}
+    return response
 @router.post("/create",status_code=201)
 def create_users(request:schemas.Users,db:Session=Depends(get_db)):
     usernameValidate =db.query(models.Users).filter(models.Users.username== request.username).first()
@@ -55,7 +62,8 @@ def create_users(request:schemas.Users,db:Session=Depends(get_db)):
     db.add(create)
     db.commit()
     db.refresh(create)
-    return create
+    reponce={"status_code":200,"detail":f"User  id-{create.id} Created Successfully."}
+    return reponce
 
 @router.put("/update/{id}",status_code=200)
 async def update_Users(id:int,request:schemas.UsersUpdateRequestModel,db: Session = Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
@@ -68,13 +76,15 @@ async def update_Users(id:int,request:schemas.UsersUpdateRequestModel,db: Sessio
     users.email_id=request.email_id 
     users.updated_date=datetime.now() 
     db.commit()
-    return "Updated successfully."
+    reponce={"status_code":200,"detail":f"User id-{users.id}Updated successfully."}
+    return reponce
 @router.delete("/delete/{id}",status_code=202)
 def delete_users(id:int,db: Session = Depends(get_db),current_user:schemas.Users=Depends(oauth2.get_current_user)):
     
-    Users=db.query(models.Users).filter(models.Users.id == id)
-    if not Users.first():
+    user=db.query(models.Users).filter(models.Users.id == id)
+    if not user.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"{id} Data Not Found")
-    Users.delete(synchronize_session=False)
+    user.delete(synchronize_session=False)
     db.commit()
-    return "Deleted successfully."
+    reponce={"status_code":200,"detail":f"User id-{user.first().id} Deleted successfully."}
+    return reponce
